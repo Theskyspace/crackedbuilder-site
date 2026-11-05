@@ -1,0 +1,87 @@
+---
+import '../styles/global.css';
+import { url } from '../lib/format';
+
+interface Props {
+  title?: string;
+  description?: string;
+  wide?: boolean;
+}
+
+const {
+  title = 'Akash Joshi — developer, occasional writer, who overthinks in public',
+  description = 'Akash Joshi, founding engineer. Fintech, identity and AI agent systems in production. Writing on fintech infra and building under ambiguity.',
+  wide = false,
+} = Astro.props;
+
+const path = Astro.url.pathname.replace(/\/$/, '');
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const home = url('/').replace(/\/$/, '');
+const isActive = (p: string) => {
+  const full = url(p).replace(/\/$/, '');
+  if (p === '/') return path === home;
+  return path === full || path.startsWith(full + '/');
+};
+
+const navLinks = [
+  { href: '/writing', label: 'writing' },
+  { href: '/work', label: 'work' },
+  { href: '/projects', label: 'projects' },
+  { href: '/about', label: 'about' },
+];
+---
+
+<!doctype html>
+<html lang="en" class="bg-neutral-950 text-neutral-100">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta name="twitter:card" content="summary" />
+    <meta name="theme-color" content="#0a0a0a" />
+    <title>{title}</title>
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href={url('/favicon.svg')} />
+    <link rel="alternate" type="application/rss+xml" title="Akash Joshi — Writing" href={url('/rss.xml')} />
+    <link rel="sitemap" href={url('/sitemap-index.xml')} />
+  </head>
+  <body class="bg-neutral-950 font-sans antialiased text-[15px] leading-7 text-neutral-300 selection:bg-neutral-100 selection:text-neutral-900">
+    <div class={`mx-auto px-6 py-10 md:py-16 ${wide ? 'max-w-3xl' : 'max-w-2xl'}`}>
+      <nav class="mb-14 flex items-center justify-between text-sm text-neutral-400">
+        <a
+          href={url('/')}
+          class="font-medium text-neutral-100 hover:text-neutral-400 transition-colors"
+          aria-current={isActive('/') ? 'page' : undefined}
+        >
+          akash joshi
+        </a>
+        <div class="flex items-center gap-5">
+          {navLinks.map((l) => (
+            <a
+              href={url(l.href)}
+              class={`transition-colors ${isActive(l.href) ? 'text-neutral-100' : 'hover:text-neutral-100'}`}
+              aria-current={isActive(l.href) ? 'page' : undefined}
+            >
+              {l.label}
+            </a>
+          ))}
+        </div>
+      </nav>
+      <slot />
+      <footer class="mt-24 pt-8 border-t border-neutral-900 flex flex-wrap items-center justify-between gap-3 text-xs text-neutral-500">
+        <span>akash joshi · {new Date().getFullYear()}</span>
+        <span class="flex items-center gap-4">
+          <a href="https://github.com/theskyspace" class="hover:text-neutral-200 transition-colors">github</a>
+          <a href="https://linkedin.com/in/theskyspace" class="hover:text-neutral-200 transition-colors">linkedin</a>
+          <a href="mailto:theskyspacedev@gmail.com" class="hover:text-neutral-200 transition-colors">theskyspacedev@gmail.com</a>
+          <a href={url('/resume')} class="hover:text-neutral-200 transition-colors">resume</a>
+        </span>
+      </footer>
+    </div>
+  </body>
+</html>
