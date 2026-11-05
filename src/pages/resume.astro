@@ -1,0 +1,168 @@
+---
+import Base from '../layouts/Base.astro';
+import { url } from '../lib/format';
+
+const experience = [
+  {
+    company: 'Equal Identity (MoneyOne)',
+    sub: 'Software Engineer · RBI Account Aggregator framework · Hyderabad',
+    period: 'Dec 2024 to Oct 2026',
+    bullets: [
+      'Built a company-wide agent harness on Claude (Schedules, Agents, Skills) serving engineering, sales, growth, and product: grounded in company and codebase context, debugging tools wired in, reachable from Slack and Jira, human-gated before writes; ~300 runs/week, 87% adoption org-wide, 90% of support threads triaged.',
+      'Shipped the Bulk Orchestration System, a Go workflow engine on the critical path for bulk operations at ~2M records/day, where new business flows compose from shared steps without new service code; INR 200–300M projected at 10–15% market penetration.',
+      'Built Nexus, a queue-based notification router and the platform\'s first multi-tenant layer; scaled from launch to ~18M FI notifications/month with zero drops, ending transaction drop-offs caused by missed deliveries.',
+      'Spearheaded Customer Protect, automated detection-and-correction of malformed Account Aggregator consent templates; ~100 upstream fixes/month guard 25–30M downstream consent requests, cut consent failures >20%, and went mandatory for every enterprise customer on the platform.',
+      'Architected Multi CR Support + migration pipeline to unlock client-switches from incumbent TSPs; ported 2M in-flight consents for a top Indian discount broker with zero rollbacks, moving INR 4M MRR.',
+      'Built API-level observability from zero; carried 4 on-call rotations, resolved 8 highest-priority incidents, and mentored an intern to production release.',
+    ],
+  },
+  {
+    company: 'Yelow Payments Private Limited',
+    sub: 'Founding Engineer · Lending fintech · Remote',
+    period: 'May 2024 — Nov 2024',
+    bullets: [
+      'Engineered a business rule engine (DRF + Rust-based Gorules) evaluating underwriting policy in <50ms without redeploys; disbursed INR 20M in loans within 10 days of launch.',
+      'Designed a configurable workflow + BFF system as the flagship lending gateway; added new lender journeys via configuration, not code, behind a uniform consumer surface.',
+    ],
+  },
+  {
+    company: 'SayF (Wealides Fintech Pvt Ltd)',
+    sub: 'Founding Engineer · Cashback / digital-gold consumer app · Titan Capital-backed · Remote (Bangalore-based)',
+    period: 'Oct 2021 — May 2024',
+    bullets: [
+      'Built the consumer-rewards backend from scratch (DRF + NestJS) for a Titan-Capital-backed B2C savings app, owning the digital gold wallet, Auto-Save engine, and Smart Referral system.',
+      'Scaled its 200+ brand affiliate engine to 120K users and INR 1B+ transaction value, holding ~3K req/min peak on AWS ECS, RDS + PostgreSQL.',
+    ],
+  },
+];
+
+const projects = [
+  {
+    name: 'Foyo - AI-first CRM for real-estate developers',
+    detail: 'Built Foyo, an AI-first real-estate CRM with multilingual voice agents, buyer profiles and configurable follow-up workflows across calls and WhatsApp.',
+    href: 'https://foyo.crackedbuilder.com/pitch',
+  },
+  {
+    name: 'Flowstate — on-device macOS dictation app',
+    detail: 'Real-time on-device speech-to-text (no cloud, no audio leaves the machine) using NVIDIA Parakeet TDT and OpenAI Whisper in CoreML with Silero VAD, daemon-streamed so transcription overlaps speech — ~200–350ms from speech to fully punctuated text. Fidelity-preserving formatting (local LLM only for list boundaries, every item verified as a verbatim substring), fix-in-place editing via the Accessibility API; one command ships a signed Sparkle appcast with binary delta updates, DMG, and Homebrew cask.',
+    href: 'https://flowstate.crackedbuilder.com',
+  },
+];
+
+const skills = [
+  { label: 'Languages', items: 'Go · Python · TypeScript · Swift · SQL' },
+  { label: 'AI & Agents', items: 'Agent orchestration (tool use, retrieval, human-in-the-loop gating) · evals · Anthropic + OpenAI SDKs · on-device ML (CoreML)' },
+  { label: 'Backend', items: 'Django + DRF · NestJS · Next.js / React · REST + BFF patterns · queue-based async processing · multi-tenancy' },
+  { label: 'Infra & Data', items: 'AWS (ECS, S3, RDS, Athena) · Docker · Jenkins · GitHub Actions · PostgreSQL · Redis · observability instrumentation' },
+];
+
+const awards = [
+  'Monthly Demo Award (×2) — Equal / MoneyOne.',
+  'Smart India Hackathon 2022 — Winner, Team Lead (DRDO problem statement; felicitated by the Vice President of India).',
+  'UNESCO India–Africa Hackathon 2022 — Winner.',
+];
+---
+
+<Base title="Akash Joshi — Resume">
+  <header class="mb-12">
+    <div class="flex flex-wrap items-start justify-between gap-4">
+      <div>
+        <h1 class="text-2xl font-medium tracking-tight text-neutral-100">Akash Joshi</h1>
+        <p class="mt-1 text-neutral-400">2x Founding Engineer · builds regulated fintech infrastructure and the AI tooling that operates it</p>
+        <p class="mt-3 text-sm text-neutral-500">India · open to remote</p>
+        <p class="mt-3 text-sm text-neutral-400">
+          Best way to reach me:
+          <a href="https://linkedin.com/in/theskyspace" class="text-neutral-100 underline decoration-neutral-700 hover:decoration-neutral-100 transition">LinkedIn</a>
+          <span class="mx-1 text-neutral-600">·</span>
+          <a href="mailto:theskyspacedev@gmail.com" class="underline decoration-neutral-700 hover:decoration-neutral-100 transition">theskyspacedev@gmail.com</a>
+          <span class="mx-1 text-neutral-600">·</span>
+          <a href="https://github.com/theskyspace" class="underline decoration-neutral-700 hover:decoration-neutral-100 transition">github</a>
+        </p>
+      </div>
+      <a
+        href={url('/Akash-Joshi-Resume.pdf')}
+        download="Akash Joshi Resume.pdf"
+        class="shrink-0 text-xs uppercase tracking-[0.14em] border border-neutral-800 text-neutral-400 hover:text-neutral-100 hover:border-neutral-600 rounded-full px-4 py-1.5 transition-colors"
+      >
+        download pdf ↓
+      </a>
+    </div>
+  </header>
+
+  <section class="mb-12">
+    <h2 class="mb-4 text-xs font-medium uppercase tracking-[0.18em] text-neutral-500">Skills</h2>
+    <dl class="space-y-1.5">
+      {skills.map((s) => (
+        <div class="flex flex-wrap gap-x-3">
+          <dt class="text-neutral-500 text-sm w-28 shrink-0">{s.label}</dt>
+          <dd class="text-neutral-200 text-sm">{s.items}</dd>
+        </div>
+      ))}
+    </dl>
+  </section>
+
+  <section class="mb-12">
+    <h2 class="mb-6 text-xs font-medium uppercase tracking-[0.18em] text-neutral-500">Experience</h2>
+    <ol class="space-y-10">
+      {experience.map((r) => (
+        <li>
+          <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+            <div>
+              <h3 class="text-base font-medium text-neutral-100">{r.company}</h3>
+              <p class="text-sm text-neutral-500">{r.sub}</p>
+            </div>
+            <p class="text-sm tabular-nums text-neutral-500 whitespace-nowrap">{r.period}</p>
+          </div>
+          <ul class="mt-3 space-y-1.5 text-neutral-300 text-[14.5px]">
+            {r.bullets.map((b) => (
+              <li class="relative pl-5 before:absolute before:left-0 before:top-[0.65em] before:h-px before:w-3 before:bg-neutral-700">
+                {b}
+              </li>
+            ))}
+          </ul>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <section class="mb-12">
+    <h2 class="mb-6 text-xs font-medium uppercase tracking-[0.18em] text-neutral-500">Projects</h2>
+    <ul class="space-y-5">
+      {projects.map((p) => (
+        <li>
+          <div class="flex items-baseline justify-between gap-4">
+            <h3 class="text-base font-medium text-neutral-100">{p.name}</h3>
+            {p.href !== '#' && (
+              <a href={p.href} class="text-sm text-neutral-500 hover:text-neutral-100 transition-colors shrink-0">
+                link →
+              </a>
+            )}
+          </div>
+          <p class="mt-1 text-neutral-300 text-[14.5px]">{p.detail}</p>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="mb-12">
+    <h2 class="mb-6 text-xs font-medium uppercase tracking-[0.18em] text-neutral-500">Education</h2>
+    <div class="flex flex-wrap items-baseline justify-between gap-x-4">
+      <div>
+        <h3 class="text-base font-medium text-neutral-100">B.E. Computer Engineering</h3>
+        <p class="text-sm text-neutral-500">Bharati Vidyapeeth College of Engineering (University of Mumbai) · CGPA 9.1 / 10</p>
+      </div>
+      <p class="text-sm tabular-nums text-neutral-500 whitespace-nowrap">Jun 2020 — Jun 2024</p>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="mb-6 text-xs font-medium uppercase tracking-[0.18em] text-neutral-500">Recognition</h2>
+    <ul class="space-y-1.5 text-neutral-300 text-[14.5px]">
+      {awards.map((a) => (
+        <li class="relative pl-5 before:absolute before:left-0 before:top-[0.65em] before:h-px before:w-3 before:bg-neutral-700">
+          {a}
+        </li>
+      ))}
+    </ul>
+  </section>
+</Base>
