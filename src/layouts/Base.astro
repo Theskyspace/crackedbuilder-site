@@ -50,6 +50,13 @@ const navLinks = [
     <meta name="twitter:image" content="https://crackedbuilder.com/og-card.png" />
     <meta name="theme-color" content="#0a0a0a" />
     <title>{title}</title>
+    <script is:inline>
+      try {
+        if (sessionStorage.getItem('cb-loader-seen')) {
+          document.documentElement.classList.add('loader-skip');
+        }
+      } catch (e) {}
+    </script>
     <link rel="canonical" href={canonical} />
     <link rel="icon" type="image/png" sizes="32x32" href={url('/favicon-32.png')} />
     <link rel="icon" type="image/png" sizes="48x48" href={url('/favicon-48.png')} />
@@ -58,6 +65,15 @@ const navLinks = [
     <link rel="sitemap" href={url('/sitemap-index.xml')} />
   </head>
   <body class="bg-neutral-950 font-sans antialiased text-[15px] leading-7 text-neutral-300 selection:bg-neutral-100 selection:text-neutral-900">
+    <div
+      id="loader-overlay"
+      class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-neutral-950 transition-opacity duration-300"
+      role="status"
+      aria-live="polite"
+    >
+      <img src={url('/loader-face.webp')} alt="" width="140" height="140" class="loader-face" />
+      <div id="loader-phrase" class="loader-phrase"></div>
+    </div>
     <div class={`mx-auto px-6 py-10 md:py-16 ${wide ? 'max-w-3xl' : 'max-w-2xl'}`}>
       <nav class="mb-14 flex items-center justify-between text-sm text-neutral-400">
         <a
@@ -87,8 +103,99 @@ const navLinks = [
           <a href="https://linkedin.com/in/theskyspace" class="hover:text-neutral-200 transition-colors">linkedin</a>
           <a href="mailto:theskyspacedev@gmail.com" class="hover:text-neutral-200 transition-colors">theskyspacedev@gmail.com</a>
           <a href={url('/resume')} class="hover:text-neutral-200 transition-colors">resume</a>
+          <a href="#" data-loader-replay class="hover:text-neutral-200 transition-colors">replay intro</a>
         </span>
       </footer>
     </div>
+    <style>
+      .loader-face {
+        width: 140px;
+        height: 140px;
+        margin-top: -16px; /* trims the sprite's transparent headroom */
+        image-rendering: pixelated;
+      }
+      .loader-phrase {
+        margin-top: -30px; /* trims the sprite's transparent floor; text sits right under the chin */
+        color: #a3a3a3;
+        opacity: 0.5;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        font-size: 14px;
+        letter-spacing: 0.02em;
+        min-height: 1.2em;
+        transform: translateY(0);
+        transition: opacity 240ms ease, transform 240ms ease;
+      }
+      .loader-phrase.is-hidden {
+        opacity: 0;
+        transform: translateY(3px);
+      }
+      #loader-overlay.loader-done {
+        opacity: 0;
+        pointer-events: none;
+      }
+      :global(html.loader-skip) #loader-overlay {
+        display: none;
+      }
+    </style>
+    <script is:inline>
+      (() => {
+        const FACTS = [
+          'overthinks in public',
+          'music head, guitar too',
+          'lifts metal, literally',
+          'building since nineteen',
+          'catches wrong chords by ear',
+          'ships quiet convenience',
+          'occasional writer',
+        ];
+        const overlay = document.getElementById('loader-overlay');
+        const el = document.getElementById('loader-phrase');
+        if (!overlay || !el) return;
+        let visibleTimer, swapTimer, endTimer;
+        const run = () => {
+          const lines = [...FACTS].sort(() => Math.random() - 0.5);
+          let i = 0;
+          overlay.classList.remove('loader-done');
+          el.textContent = lines[0];
+          el.classList.remove('is-hidden');
+          const tick = () => {
+            el.classList.add('is-hidden');
+            swapTimer = setTimeout(() => {
+              i = (i + 1) % lines.length;
+              el.textContent = lines[i];
+              el.classList.remove('is-hidden');
+            }, 240);
+            visibleTimer = setTimeout(tick, 2440);
+          };
+          visibleTimer = setTimeout(tick, 2200);
+          // random 1-3s hold, then fade the overlay away
+          endTimer = setTimeout(() => {
+            clearTimeout(visibleTimer);
+            clearTimeout(swapTimer);
+            overlay.classList.add('loader-done');
+            setTimeout(() => { overlay.style.display = 'none'; }, 350);
+          }, 1000 + Math.random() * 2000);
+        };
+        let seen = null;
+        try { seen = sessionStorage.getItem('cb-loader-seen'); } catch (e) {}
+        if (seen) {
+          overlay.style.display = 'none';
+        } else {
+          try { sessionStorage.setItem('cb-loader-seen', '1'); } catch (e) {}
+          run();
+        }
+        document.querySelectorAll('[data-loader-replay]').forEach((b) =>
+          b.addEventListener('click', (e) => {
+            e.preventDefault();
+            clearTimeout(visibleTimer);
+            clearTimeout(swapTimer);
+            clearTimeout(endTimer);
+            document.documentElement.classList.remove('loader-skip');
+            overlay.style.display = 'flex';
+            run();
+          })
+        );
+      })();
+    </script>
   </body>
 </html>
