@@ -29,6 +29,23 @@ const navLinks = [
   { href: '/projects', label: 'projects' },
   { href: '/about', label: 'about' },
 ];
+
+const personLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Akash Joshi',
+  url: 'https://crackedbuilder.com/',
+  image: 'https://crackedbuilder.com/loader-face.webp',
+  description:
+    'Akash Joshi, founding engineer. Fintech, identity and AI agent systems in production. Writing on fintech infra and building under ambiguity.',
+  jobTitle: 'Founding Engineer',
+  knowsAbout: ['fintech infrastructure', 'identity systems', 'AI agents'],
+  sameAs: [
+    'https://github.com/theskyspace',
+    'https://linkedin.com/in/theskyspace',
+    'https://peerlist.io/theskypace',
+  ],
+};
 ---
 
 <!doctype html>
@@ -63,6 +80,7 @@ const navLinks = [
     <link rel="apple-touch-icon" href={url('/apple-touch-icon.png')} />
     <link rel="alternate" type="application/rss+xml" title="Akash Joshi — Writing" href={url('/rss.xml')} />
     <link rel="sitemap" href={url('/sitemap-index.xml')} />
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(personLd)} />
   </head>
   <body class="bg-neutral-950 font-sans antialiased text-[15px] leading-7 text-neutral-300 selection:bg-neutral-100 selection:text-neutral-900">
     <div
