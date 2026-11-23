@@ -9,15 +9,15 @@ const { id, href, count } = Astro.props;
 <div class="mb-8 flex items-baseline justify-between">
   <h2
     id={id}
-    class="text-xs font-medium uppercase tracking-[0.18em] text-neutral-500"
+    class="text-xs font-medium uppercase tracking-[0.18em] text-ink-500"
   >
     <slot />
-    {count !== undefined && <span class="ml-2 text-neutral-700 tabular-nums">[{count}]</span>}
+    {count !== undefined && <span class="ml-2 text-ink-700 tabular-nums">[{count}]</span>}
   </h2>
   {href && (
     <a
       href={href}
-      class="text-xs uppercase tracking-[0.18em] text-neutral-500 hover:text-neutral-200 transition-colors"
+      class="text-xs uppercase tracking-[0.18em] text-ink-500 hover:text-ink-200 transition-colors"
     >
       all →
     </a>
