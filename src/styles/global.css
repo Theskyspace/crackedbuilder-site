@@ -3,15 +3,101 @@
 @theme {
   --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Monaco, Consolas, monospace;
+
+  /* Semantic colors keep utilities and rendered Markdown in the same theme. */
+  --color-page: #fafafa;
+  --color-panel: #f0f0f0;
+  --color-bullet: #a3a3a3;
+  --color-selection: #171717;
+  --color-ink-bright: #0a0a0a;
+  --color-ink-100: #171717;
+  --color-ink-200: #262626;
+  --color-ink-300: #404040;
+  --color-ink-400: #525252;
+  --color-ink-500: #666666;
+  --color-ink-600: #737373;
+  --color-ink-700: #737373;
+  --color-ink-800: #a3a3a3;
+  --color-ink-900: #fafafa;
+  --color-rule-100: #171717;
+  --color-rule-600: #a3a3a3;
+  --color-rule-700: #b8b8b8;
+  --color-rule-800: #d4d4d4;
+  --color-rule-900: #dedede;
+  --color-status-seedling: #047857;
+  --color-status-growing: #92400e;
+  --color-status-evergreen: #0369a1;
 }
 
 html {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  color-scheme: dark;
+  color-scheme: light;
+  background-color: var(--color-page);
+}
+
+/* System is the default. An explicit device choice overrides it. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --color-page: #0a0a0a;
+    --color-panel: #171717;
+    --color-bullet: #404040;
+    --color-selection: #f5f5f5;
+    --color-ink-bright: #ffffff;
+    --color-ink-100: #f5f5f5;
+    --color-ink-200: #e5e5e5;
+    --color-ink-300: #d4d4d4;
+    --color-ink-400: #a3a3a3;
+    --color-ink-500: #737373;
+    --color-ink-600: #525252;
+    --color-ink-700: #404040;
+    --color-ink-800: #262626;
+    --color-ink-900: #171717;
+    --color-rule-100: #f5f5f5;
+    --color-rule-600: #525252;
+    --color-rule-700: #404040;
+    --color-rule-800: #262626;
+    --color-rule-900: #171717;
+    --color-status-seedling: color-mix(in oklab, #6ee7b7 80%, transparent);
+    --color-status-growing: color-mix(in oklab, #fcd34d 80%, transparent);
+    --color-status-evergreen: color-mix(in oklab, #7dd3fc 80%, transparent);
+  }
 }
 
 a {
   text-underline-offset: 3px;
   text-decoration-thickness: 1px;
 }
+
+:root[data-theme="dark"] {
+    color-scheme: dark;
+    --color-page: #0a0a0a;
+    --color-panel: #171717;
+    --color-bullet: #404040;
+    --color-selection: #f5f5f5;
+    --color-ink-bright: #ffffff;
+    --color-ink-100: #f5f5f5;
+    --color-ink-200: #e5e5e5;
+    --color-ink-300: #d4d4d4;
+    --color-ink-400: #a3a3a3;
+    --color-ink-500: #737373;
+    --color-ink-600: #525252;
+    --color-ink-700: #404040;
+    --color-ink-800: #262626;
+    --color-ink-900: #171717;
+    --color-rule-100: #f5f5f5;
+    --color-rule-600: #525252;
+    --color-rule-700: #404040;
+    --color-rule-800: #262626;
+    --color-rule-900: #171717;
+    --color-status-seedling: color-mix(in oklab, #6ee7b7 80%, transparent);
+    --color-status-growing: color-mix(in oklab, #fcd34d 80%, transparent);
+    --color-status-evergreen: color-mix(in oklab, #7dd3fc 80%, transparent);
+  }
+
+::view-transition-old(root),
+::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+::view-transition-old(root) { z-index: 1; }
+::view-transition-new(root) { z-index: 2; }
+body { padding-bottom: 76px; }

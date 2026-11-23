@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import ThemeControl from '../components/ThemeControl.astro';
 import { url } from '../lib/format';
 
 interface Props {
@@ -49,7 +50,7 @@ const personLd = {
 ---
 
 <!doctype html>
-<html lang="en" class="bg-neutral-950 text-neutral-100">
+<html lang="en" class="bg-page text-ink-100">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -65,8 +66,18 @@ const personLd = {
     <meta property="og:image:alt" content="Pixel avatar of Akash Joshi with sunglasses, next to the text: 2x founding engineer. Cracked builder." />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content="https://crackedbuilder.com/og-card.png" />
-    <meta name="theme-color" content="#0a0a0a" />
+    <meta name="theme-color" content="#fafafa" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
     <title>{title}</title>
+    <script is:inline>
+      try {
+        const theme = localStorage.getItem('cb-theme');
+        if (theme === 'light' || theme === 'dark') document.documentElement.dataset.theme = theme;
+        const dark = theme === 'dark' || (theme !== 'light' && matchMedia('(prefers-color-scheme: dark)').matches);
+        document.querySelectorAll('meta[name="theme-color"]').forEach(meta => meta.setAttribute('content', dark ? '#0a0a0a' : '#fafafa'));
+      } catch {}
+    </script>
+    <noscript><style>.theme-control { display: none !important; }</style></noscript>
     <script is:inline>
       try {
         if (sessionStorage.getItem('cb-loader-seen')) {
@@ -82,10 +93,11 @@ const personLd = {
     <link rel="sitemap" href={url('/sitemap-index.xml')} />
     <script type="application/ld+json" is:inline set:html={JSON.stringify(personLd)} />
   </head>
-  <body class="bg-neutral-950 font-sans antialiased text-[15px] leading-7 text-neutral-300 selection:bg-neutral-100 selection:text-neutral-900">
+  <body class="bg-page font-sans antialiased text-[15px] leading-7 text-ink-300 selection:bg-selection selection:text-ink-900">
+    <ThemeControl />
     <div
       id="loader-overlay"
-      class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-neutral-950 transition-opacity duration-300"
+      class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-page transition-opacity duration-300"
       role="status"
       aria-live="polite"
     >
@@ -93,10 +105,10 @@ const personLd = {
       <div id="loader-phrase" class="loader-phrase"></div>
     </div>
     <div class={`mx-auto px-6 py-10 md:py-16 ${wide ? 'max-w-3xl' : 'max-w-2xl'}`}>
-      <nav class="mb-14 flex items-center justify-between text-sm text-neutral-400">
+      <nav class="mb-14 flex items-center justify-between text-sm text-ink-400">
         <a
           href={url('/')}
-          class="font-medium text-neutral-100 hover:text-neutral-400 transition-colors"
+          class="font-medium text-ink-100 hover:text-ink-400 transition-colors"
           aria-current={isActive('/') ? 'page' : undefined}
         >
           akash joshi
@@ -105,7 +117,7 @@ const personLd = {
           {navLinks.map((l) => (
             <a
               href={url(l.href)}
-              class={`transition-colors ${isActive(l.href) ? 'text-neutral-100' : 'hover:text-neutral-100'}`}
+              class={`transition-colors ${isActive(l.href) ? 'text-ink-100' : 'hover:text-ink-100'}`}
               aria-current={isActive(l.href) ? 'page' : undefined}
             >
               {l.label}
@@ -114,14 +126,14 @@ const personLd = {
         </div>
       </nav>
       <slot />
-      <footer class="mt-24 pt-8 border-t border-neutral-900 flex flex-wrap items-center justify-between gap-3 text-xs text-neutral-500">
+      <footer class="mt-24 pt-8 border-t border-rule-900 flex flex-wrap items-center justify-between gap-3 text-xs text-ink-500">
         <span>akash joshi · {new Date().getFullYear()}</span>
-        <span class="flex items-center gap-4">
-          <a href="https://github.com/theskyspace" class="hover:text-neutral-200 transition-colors">github</a>
-          <a href="https://linkedin.com/in/theskyspace" class="hover:text-neutral-200 transition-colors">linkedin</a>
-          <a href="mailto:theskyspacedev@gmail.com" class="hover:text-neutral-200 transition-colors">theskyspacedev@gmail.com</a>
-          <a href={url('/resume')} class="hover:text-neutral-200 transition-colors">resume</a>
-          <a href="#" data-loader-replay class="hover:text-neutral-200 transition-colors">replay intro</a>
+        <span class="flex flex-wrap items-center gap-x-4 gap-y-2">
+          <a href="https://github.com/theskyspace" class="hover:text-ink-200 transition-colors">github</a>
+          <a href="https://linkedin.com/in/theskyspace" class="hover:text-ink-200 transition-colors">linkedin</a>
+          <a href="mailto:theskyspacedev@gmail.com" class="hover:text-ink-200 transition-colors">theskyspacedev@gmail.com</a>
+          <a href={url('/resume')} class="hover:text-ink-200 transition-colors">resume</a>
+          <a href="#" data-loader-replay class="hover:text-ink-200 transition-colors">replay intro</a>
         </span>
       </footer>
     </div>
@@ -134,7 +146,7 @@ const personLd = {
       }
       .loader-phrase {
         margin-top: -13px; /* trims most of the sprite's transparent floor, leaving breathing room under the chin */
-        color: #a3a3a3;
+        color: var(--color-ink-400);
         opacity: 0.5;
         font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
         font-size: 11px;
