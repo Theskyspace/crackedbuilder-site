@@ -7,9 +7,9 @@ interface Props {
 const { maturity, size = 'sm' } = Astro.props;
 
 const meta = {
-  seedling: { glyph: '✦', label: 'seedling', tone: 'text-emerald-300/80' },
-  growing: { glyph: '✦✦', label: 'growing', tone: 'text-amber-300/80' },
-  evergreen: { glyph: '✦✦✦', label: 'evergreen', tone: 'text-sky-300/80' },
+  seedling: { glyph: '✦', label: 'seedling', tone: 'text-status-seedling' },
+  growing: { glyph: '✦✦', label: 'growing', tone: 'text-status-growing' },
+  evergreen: { glyph: '✦✦✦', label: 'evergreen', tone: 'text-status-evergreen' },
 } as const;
 
 const m = meta[maturity];
